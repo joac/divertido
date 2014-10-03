@@ -26,93 +26,23 @@
         background-color: gray;
       }
     </style>
-    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js">></script>
-    <script>
-$(function () {
-    "use strict";
-  var $div = $(".div"),
-      $workspace = $("#workspace"),
-      $elements = $(".element"),
-      logArgs = function (text) {
-        return function () {
-          console.log(text + "-----", arguments);
-        };
-      };
-
-      var active = function (evt) {
-        $(evt.target).addClass('active');
-        return evt;
-      };
-      var inactive = function (evt) {
-        $(evt.target).removeClass('active');
-        return evt;
-      };
-
-      function startDrag(event) {
-        event.originalEvent.dataTransfer.setData("text/plain", $(event.target).text());
-      };
-
-      var draggingHelper = function ($el) {
-        $el.on('dragenter', active);
-        $el.on('dragleave', inactive);
-      };
-
-      jQuery.fn.justtext = function() {
-
-        return $(this)  .clone()
-          .children()
-          .remove()
-          .end()
-          .text();
-
-      };
-      
-       
-      $elements.on('dragstart', startDrag);
-
-      console.log($elements);
-
-      $workspace.on('dragover', function (evt) {
-          evt.preventDefault();
-        });
-
-      $workspace.on('drop', function (evt) {
-          var data = evt.originalEvent.dataTransfer.getData('text/plain'),
-              div = document.createElement("div"),
-              $parent = $(evt.target);
-
-          if (data === "img") {
-            div = document.createElement('img');
-            div.src = "http://baconmockup.com/50/50";
-          }
-
-          div.className = "divertido-inner-element";
-          div.contentEditable = true;
-          if ($workspace[0] == $parent[0] ){
-            div.textContent = "root";
-          }
-            
-          div.textContent = $parent.justtext() + "-child-" + ($parent.children().length + 1);
-          $parent.append(div);
-          inactive(evt);
-          draggingHelper($(div));
-      });
-
-
-  });
-    
-    
-    </script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="generator.js"> </script>
   </head>
 
   <body>
     La idea es construir un generador automático de interfaces react-based
     Hacer interfaces es una paja
     <br>
-    <span class="element div" draggable="true">div</span>
-    <span class="element h2" draggable="true">h1</span>
-    <span class="element h1" draggable="true">h2</span>
-    <span class="element h1" draggable="true">img</span>
+    <ul>
+    <li class="element textarea" draggable="true">textarea</li>
+    <li class="element div" draggable="true">div</li>
+    <li class="element h2" draggable="true">h1</li>
+    <li class="element h1" draggable="true">h2</li>
+    <li class="element img" draggable="true">img</li>
+    </ul>
     <div id="workspace" class="workspace"></div>
+    <textarea id="output"></textarea>
   </body>
 </html>
